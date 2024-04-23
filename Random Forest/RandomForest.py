@@ -8,7 +8,7 @@ testing_data = data_list[800:891] # Testing 10%
 
 
 #####################
-# Boiler-plate code #
+# BOILER-PLATE CODE #
 #####################
 
 # Testing for unique values (duplicate values)
@@ -65,13 +65,15 @@ def partition(rows, question):
 ########################
 
 # This can use entropy but this uses gini
-# Gini measures a features impurity
+# Gini measures a features impurity; purity = 1 - probability_true^2 + probability_false^2
+# More efficient than entropy in terms of computing power, measures the degree of probability of a variable being wrongly classified
+# If all elements belong to single class then it is a considered pure, we want nodes to be as pure as possible
 def gini(rows):
     counts = class_counts(rows)
     impurity = 1
     for lbl in counts:
         prob_of_lbl =  counts[lbl] / float(len(rows))
-        impurity -= prob_of_lbl ** 2
+        impurity -= prob_of_lbl ** 2 
     return impurity
 
 
@@ -94,7 +96,7 @@ def best_split(rows):
         values = set([row[col] for row in rows])
         for val in values:
             question = Question(col, val) # Splitting between true and false rows with partitioning
-            true_rows, false_rows = partition(rows, question)
+            true_rows, false_rows = partition(rows, question) 
 
             if len(true_rows) == 0 or len(false_rows) == 0:
                 continue
@@ -126,7 +128,7 @@ class DecisionNode:
         self.false_branch = false_branch    # False
 
 
-# Building the tree recursively; O(nlogn)
+# Building a tree recursively; O(nlogn)
 def build_tree(rows):
     gain, question = best_split(rows) # Determine where to split data based on gain and question
 
